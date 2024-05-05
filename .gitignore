@@ -1,2 +1,7 @@
 linenoise_example
-*.exe
+linenoise_utf8_example
+
+linenoise-ship.c
+
+*.exe 
+*.so
