@@ -185,29 +185,29 @@ static char **history = NULL;
 
 /* Structure to contain the status of the current (being edited) line */
 struct current {
-    stringbuf *buf; /* Current buffer. Always null terminated */
-    int pos;    /* Cursor position, measured in chars */
-    int cols;   /* Size of the window, in chars */
-    int nrows;  /* How many rows are being used in multiline mode (>= 1) */
-    int rpos;   /* The current row containing the cursor - multiline mode only */
-    int colsright; /* refreshLine() cached cols for insert_char() optimisation */
-    int colsleft;  /* refreshLine() cached cols for remove_char() optimisation */
+    stringbuf *buf;     /* Current buffer. Always null terminated */
+    int pos;            /* Cursor position, measured in chars */
+    int cols;           /* Size of the window, in chars */
+    int nrows;          /* How many rows are being used in multiline mode (>= 1) */
+    int rpos;           /* The current row containing the cursor - multiline mode only */
+    int colsright;      /* refreshLine() cached cols for insert_char() optimisation */
+    int colsleft;       /* refreshLine() cached cols for remove_char() optimisation */
     const char *prompt;
     stringbuf *capture; /* capture buffer, or NULL for none. Always null terminated */
     stringbuf *output;  /* used only during refreshLine() - output accumulator */
 #if defined(USE_TERMIOS)
-    int fd;     /* Terminal fd */
+    int fd;             /* Terminal fd */
 #elif defined(USE_WINCONSOLE)
-    HANDLE outh; /* Console output handle */
-    HANDLE inh; /* Console input handle */
-    int rows;   /* Screen rows */
-    int x;      /* Current column during output */
-    int y;      /* Current row */
+    HANDLE outh;        /* Console output handle */
+    HANDLE inh;         /* Console input handle */
+    int rows;           /* Screen rows */
+    int x;              /* Current column during output */
+    int y;              /* Current row */
 #ifdef USE_UTF8
     #define UBUF_MAX_CHARS 132
     WORD ubuf[UBUF_MAX_CHARS + 1];  /* Accumulates utf16 output - one extra for final surrogate pairs */
-    int ubuflen;      /* length used in ubuf */
-    int ubufcols;     /* how many columns are represented by the chars in ubuf? */
+    int ubuflen;        /* length used in ubuf */
+    int ubufcols;       /* how many columns are represented by the chars in ubuf? */
 #endif
 #endif
 };
