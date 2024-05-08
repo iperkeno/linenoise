@@ -11,14 +11,8 @@ TCL_DECLARE_MUTEX(edit)
 void completion(const char *buf, linenoiseCompletions *lc, void *userdata)
 {
     (void)userdata;
-    if (buf[0] == 's')
-    {
-        linenoiseAddCompletion(lc, "set");
-    }
-    if (buf[0] == 'p')
-    {
-        linenoiseAddCompletion(lc, "package require");
-    }
+
+
     if (buf[0] == 'i')
     {    
         linenoiseAddCompletion(lc, "info"); 
@@ -26,6 +20,14 @@ void completion(const char *buf, linenoiseCompletions *lc, void *userdata)
         if (buf[5] == 's') linenoiseAddCompletion(lc, "info sharedlibextension");
         linenoiseAddCompletion(lc, "info tclversion");
         linenoiseAddCompletion(lc, "info patchlevel");
+    }
+    if (buf[0] == 'p')
+    {
+        linenoiseAddCompletion(lc, "package require");
+    }
+    if (buf[0] == 's')
+    {
+        linenoiseAddCompletion(lc, "set");
     }
 }
 
