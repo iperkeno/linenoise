@@ -8,7 +8,7 @@ all:  linenoise_example linenoise_utf8_example tcl
 tcl: linenoise
 
 linenoise: linenoise.h linenoise-ship.c 
-	$(CC) $(CFLAGS) -fPIC -shared -DUSE_TCL_STUBS -o $@.so -I$(TCLINC) linenoise-ship.c tcl-linenoise.c  -L$(TCLLIB) -ltclstub8.6
+	$(CC) $(CFLAGS) -fPIC -shared -DDEBUG_REFRESHLINE -DUSE_TCL_STUBS -o $@.so -I$(TCLINC) linenoise-ship.c tcl-linenoise.c  -L$(TCLLIB) -ltclstub8.6
 
 linenoise_example: linenoise.h linenoise-ship.c linenoise-win32.c example.c
 	$(CC) $(CFLAGS) -o $@ linenoise-ship.c example.c
