@@ -14,7 +14,7 @@ all: $(BUILD_DIR) $(BUILD_DIR)/tcl
 $(BUILD_DIR)/tcl: $(BUILD_DIR)/linenoise linenoise_example linenoise_utf8_example
 
 $(BUILD_DIR)/linenoise: linenoise.h 
-	$(CC) $(CFLAGS) -fPIC -shared -DDEBUG_REFRESHLINE -DUSE_TCL_STUBS -o $@.so  -I$(TCLINC)  ./tcl-linenoise.c -L$(TCLLIB) -ltclstub8.6
+	$(CC) $(CFLAGS) -fPIC -shared -DDEBUG_REFRESHLINE -DUSE_TCL_STUBS -o $@.so  -I$(TCLINC)  ./syntax.c ./tcl-linenoise.c -L$(TCLLIB) -ltclstub8.6
 
 linenoise_example: linenoise.h linenoise-ship.c linenoise-win32.c example.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ -I$(SRC_DIR) $(BUILD_DIR)/linenoise-ship.c example.c
@@ -33,7 +33,7 @@ ship: linenoise-ship.c
 # - If you want win32 support, also copy linenoise-win32.c
 # - If you never want to support utf-8, you can omit utf8.h and utf8.c
 
-linenoise-ship.c: utf8.h utf8.c stringbuf.h stringbuf.c linenoise.c
+linenoise-ship.c: utf8.h utf8.c stringbuf.h stringbuf.c syntax.h syntax.c linenoise.c
 	for i in $^; do echo "#line 1 \"$$i\""; cat $$i; done >$(BUILD_DIR)/$@
 
 # Create build directory
