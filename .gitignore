@@ -1,6 +1,9 @@
 linenoise_example
 linenoise_utf8_example
 
+
+history.txt
+
 linenoise-ship.c
 
 *.exe 
