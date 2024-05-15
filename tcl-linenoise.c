@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tcl.h>
+#include <tk.h>
 #include "linenoise.h"
 
 /* The mutex serializing the threads requesting user interaction. */
@@ -12,17 +13,20 @@ void completion(const char *buf, linenoiseCompletions *lc, void *userdata)
 {
     (void)userdata;
 
-
     if (buf[0] == 'i')
-    {    
-        linenoiseAddCompletion(lc, "info"); 
-        if (buf[5] == 'h') linenoiseAddCompletion(lc, "info hostname");
-        if (buf[5] == 's') linenoiseAddCompletion(lc, "info sharedlibextension");
+    {
+        linenoiseAddCompletion(lc, "info");
+        if (buf[5] == 'h')
+            linenoiseAddCompletion(lc, "info hostname");
+        if (buf[5] == 's')
+            linenoiseAddCompletion(lc, "info sharedlibextension");
         linenoiseAddCompletion(lc, "info tclversion");
         linenoiseAddCompletion(lc, "info patchlevel");
     }
     if (buf[0] == 'p')
     {
+        linenoiseAddCompletion(lc, "package ");
+        linenoiseAddCompletion(lc, "package names");
         linenoiseAddCompletion(lc, "package require");
     }
     if (buf[0] == 's')
@@ -66,10 +70,11 @@ ClearScreen_Cmd(ClientData cdata, Tcl_Interp *interp, int objc, Tcl_Obj *const o
 static int
 Prompt_Cmd(ClientData cdata, Tcl_Interp *interp, int objc, Tcl_Obj *const objv[])
 {
-    const char *prompt = "> ";
+    const char *prompt = "[Tcl] ";
     char *line = "";
     // int code = 0; /*return code from TCL API function like TCL_OK*/
 
+    linenoiseSetMultiLine(1); /*word wrap*/
 #ifndef NO_COMPLETION
     /* Set the completion callback. This will be called every time the
      * user uses the <tab> key. */
@@ -81,7 +86,7 @@ Prompt_Cmd(ClientData cdata, Tcl_Interp *interp, int objc, Tcl_Obj *const objv[]
     line = linenoise(prompt);
     Tcl_MutexUnlock(&edit);
 
-    Tcl_ResetResult(interp);
+    //Tcl_ResetResult(interp);
     if (line == NULL)
     {
         Tcl_SetObjResult(interp, Tcl_NewStringObj("linenoise::prompt aborted", -1));
@@ -93,7 +98,10 @@ Prompt_Cmd(ClientData cdata, Tcl_Interp *interp, int objc, Tcl_Obj *const objv[]
     {
         return TCL_ERROR;
     }
-    Tcl_Eval(interp, line);
+
+    //Tcl_Eval(interp, line);
+    Tcl_EvalEx(interp, line, -1, TCL_EVAL_GLOBAL || TCL_EVAL_DIRECT);
+    // Tcl_SetResult(interp, line, TCL_STATIC);
     linenoiseHistoryAdd(line);
     return TCL_OK;
 }
